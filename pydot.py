@@ -1895,17 +1895,10 @@ class Dot(Graph):
         dot_fd = open(path, "w+")
         if format == 'raw':
             data = self.to_string()
-            if isinstance(data, str):
-                if not isinstance(data, str):
-                    try:
-                        data = str(data, 'utf-8')
-                    except:
-                        pass
-
-            try:
+            
+            if isinstance(data, bytes):
                 data = data.encode('utf-8')
-            except:
-                pass
+            
             dot_fd.write(data)
         else:
             dot_fd.write(self.create(prog, format))
@@ -1997,7 +1990,7 @@ class Dot(Graph):
             data = stdout.read()
             if not data:
                 break
-            stdout_output.append(data)
+            stdout_output.append(data.decode('utf-8'))
         stdout.close()
 
         stdout_output = ''.join(stdout_output)
